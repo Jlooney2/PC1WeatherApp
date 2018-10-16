@@ -57,7 +57,7 @@ namespace WeatherDataAnalysis.DataTier
                 }
                 catch (Exception)
                 {
-                    this.errorMessages.Append($"Corrupt Data on line {lineNumber}");
+                    this.errorMessages.Append($"Corrupt Data on line {lineNumber} \n");
                 }
                 
                 

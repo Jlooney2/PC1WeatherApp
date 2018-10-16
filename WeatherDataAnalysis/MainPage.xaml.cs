@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage.Pickers;
@@ -31,7 +32,7 @@ namespace WeatherDataAnalysis
         public const int ApplicationWidth = 625;
 
         private WeatherDataCollection currWeatherCollection;
-
+        private StringBuilder errors;
         #endregion
 
         #region Constructors
@@ -48,6 +49,7 @@ namespace WeatherDataAnalysis
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
 
             this.currWeatherCollection = null;
+            this.errors = null;
         }
 
         #endregion
@@ -92,8 +94,9 @@ namespace WeatherDataAnalysis
                     await this.handleNewFileWithExistingFile(newWeatherCollection);
                 }
 
+                this.errors = fileParser.errorMessages;
                 var report = reportBuilder.CreateReport(this.currWeatherCollection);
-                this.summaryTextBox.Text = report;
+                this.summaryTextBox.Text = report + this.errors;
             }
         }
 
@@ -132,7 +135,7 @@ namespace WeatherDataAnalysis
                 int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
                 var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
                 var report = reportBuilder.CreateReport(this.currWeatherCollection);
-                this.summaryTextBox.Text = report;
+                this.summaryTextBox.Text = report + this.errors;
             }
         }
 
