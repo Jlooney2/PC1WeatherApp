@@ -1,0 +1,4 @@
+Bugs:
+	1. yearly breakdown doesn't handle if the month does not exist.
+Requirements not reached:
+	1. Temperature Breakdown
