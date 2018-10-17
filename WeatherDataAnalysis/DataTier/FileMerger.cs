@@ -47,14 +47,18 @@ namespace WeatherDataAnalysis.DataTier
                     this.chosenResult = await keepOrReplace.ShowAsync();
                     this.isDoForAllChecked = keepOrReplace.isDoForAllChecked;
                 }
+                else
+                {
+                    updatedWeatherDataCollection.Add(currDay);
+                }
 
-                this.addDayToTheUpdatedCollection(currDay, updatedWeatherDataCollection);
+                this.addConflictingDayToUpdatedCollection(currDay, updatedWeatherDataCollection);
             }
 
             return updatedWeatherDataCollection;
         }
 
-        private void addDayToTheUpdatedCollection(WeatherData currDay, WeatherDataCollection updatedWeatherDataCollection)
+        private void addConflictingDayToUpdatedCollection(WeatherData currDay, WeatherDataCollection updatedWeatherDataCollection)
         {
             switch (this.chosenResult)
             {
