@@ -86,9 +86,20 @@ namespace WeatherDataAnalysis.View
             var lowestTemp = daysForReport.GetDaysWithLowestTempForEachMonth();
             var averageHigh = daysForReport.GetAverageHighTempForEachMonth();
             var averageLow = daysForReport.GetAverageLowTempForEachMonth();
+            var monthCount = 1;
 
             for (var i = 0; i < daysForReport.GroupByMonth().Count; i++)
             {
+                while (highestTemp[i][0].Date.Month != monthCount)
+                {
+                    var prevMonthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(monthCount);
+                    var prevMonthyear = highestTemp[i][0].Date.Year;
+                    var prevMonthsDaysOfData = $" (0 days of data)";
+                    report.Append(prevMonthName + $" {prevMonthyear}" + prevMonthsDaysOfData + Environment.NewLine);
+                    report.Append(Environment.NewLine);
+                    monthCount++;
+                }
+
                 var monthName = highestTemp[i][0].Date.ToString("MMMM", CultureInfo.InvariantCulture);
                 var year = highestTemp[i][0].Date.Year;
                 var daysOfData = $" ({daysForReport.GroupByMonth()[i].Count} days of data)";
@@ -99,6 +110,7 @@ namespace WeatherDataAnalysis.View
                 report.Append($"Average High: {averageHigh[i]:F}" + Environment.NewLine);
                 report.Append($"Average Low: {averageLow[i]:F}" + Environment.NewLine);
                 report.Append(Environment.NewLine);
+                monthCount++;
             }
         }
 
