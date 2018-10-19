@@ -53,8 +53,7 @@ namespace WeatherDataAnalysis.View
                     tempWeatherCollection.Add(day);
                 }
 
-                this.createOverview(tempWeatherCollection, report);
-                report.Append(Environment.NewLine);
+               
             }
 
             report.Append(Environment.NewLine);
@@ -74,14 +73,15 @@ namespace WeatherDataAnalysis.View
                 {
                     tempWeatherCollection.Add(day);
                 }
-
+                this.createOverview(tempWeatherCollection, report);
+                report.Append(Environment.NewLine);
                 this.createMonthlyBreakdown(tempWeatherCollection, report);
             }
         }
 
         private void createMonthlyBreakdown(WeatherDataCollection daysForReport, StringBuilder report)
         {
-            daysForReport.GroupByMonth();
+            
             var highestTemp = daysForReport.GetDaysWithHighestTempForEachMonth();
             var lowestTemp = daysForReport.GetDaysWithLowestTempForEachMonth();
             var averageHigh = daysForReport.GetAverageHighTempForEachMonth();

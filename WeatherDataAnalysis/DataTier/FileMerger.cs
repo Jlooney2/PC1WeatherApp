@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using WeatherDataAnalysis.Model;
@@ -11,32 +8,46 @@ using WeatherDataAnalysis.View;
 namespace WeatherDataAnalysis.DataTier
 {
     /// <summary>
-    /// Handles the merging of files
+    ///     Handles the merging of files
     /// </summary>
     public class FileMerger
     {
+        #region Data members
+
         private WeatherDataCollection oldWeatherDataCollection;
         private WeatherDataCollection newWeatherDataCollection;
         private bool isDoForAllChecked;
         private ContentDialogResult chosenResult;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileMerger"/> class.
+        ///     Initializes a new instance of the <see cref="FileMerger" /> class.
         /// </summary>
         public FileMerger()
         {
             this.isDoForAllChecked = false;
         }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Merges the weather data collections.
+        ///     Merges the weather data collections.
         /// </summary>
         /// <param name="oldWeatherDataCollection">The old weather data collection.</param>
         /// <param name="newWeatherDataCollection">The new weather data collection.</param>
         /// <returns></returns>
-        public async Task<WeatherDataCollection> MergeWeatherDataCollections(WeatherDataCollection oldWeatherDataCollection, WeatherDataCollection newWeatherDataCollection)
+        public async Task<WeatherDataCollection> MergeWeatherDataCollections(
+            WeatherDataCollection oldWeatherDataCollection, WeatherDataCollection newWeatherDataCollection)
         {
-            this.oldWeatherDataCollection = oldWeatherDataCollection ?? throw new ArgumentNullException(nameof(oldWeatherDataCollection));
-            this.newWeatherDataCollection = newWeatherDataCollection ?? throw new ArgumentNullException(nameof(newWeatherDataCollection));
+            this.oldWeatherDataCollection = oldWeatherDataCollection ??
+                                            throw new ArgumentNullException(nameof(oldWeatherDataCollection));
+            this.newWeatherDataCollection = newWeatherDataCollection ??
+                                            throw new ArgumentNullException(nameof(newWeatherDataCollection));
 
             var updatedWeatherDataCollection = new WeatherDataCollection();
 
@@ -44,16 +55,12 @@ namespace WeatherDataAnalysis.DataTier
 
             foreach (var currDay in this.newWeatherDataCollection)
             {
-                if (this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(currDay.Date)) && !this.isDoForAllChecked)
+                if (this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(currDay.Date)) &&
+                    !this.isDoForAllChecked)
                 {
                     var keepOrReplace = new ReplaceOrKeepDialog(currDay);
                     this.chosenResult = await keepOrReplace.ShowAsync();
                     this.isDoForAllChecked = keepOrReplace.isDoForAllChecked;
-                }
-                
-                else
-                {
-                    updatedWeatherDataCollection.Add(currDay);
                 }
 
                 this.addConflictingDayToUpdatedCollection(currDay, updatedWeatherDataCollection);
@@ -67,16 +74,18 @@ namespace WeatherDataAnalysis.DataTier
         {
             var oldNonConflictingData = oldWeatherDataCollection
                                         .Where(oldDay =>
-                                            !newWeatherDataCollection.Any(newDay => newDay.Date.Equals(oldDay.Date))).ToList();
+                                            !newWeatherDataCollection.Any(newDay => newDay.Date.Equals(oldDay.Date)))
+                                        .ToList();
             foreach (var day in oldNonConflictingData)
             {
                 updatedWeatherDataCollection.Add(day);
+                newWeatherDataCollection.Remove(day);
             }
         }
 
-        private void addConflictingDayToUpdatedCollection(WeatherData currDay, WeatherDataCollection updatedWeatherDataCollection)
+        private void addConflictingDayToUpdatedCollection(WeatherData currDay,
+            WeatherDataCollection updatedWeatherDataCollection)
         {
-            
             switch (this.chosenResult)
             {
                 case ContentDialogResult.Primary:
@@ -87,14 +96,15 @@ namespace WeatherDataAnalysis.DataTier
                     }
                     catch (Exception)
                     {
-                        
                     }
-                        
+
                     break;
                 case ContentDialogResult.Secondary:
                     updatedWeatherDataCollection.Add(currDay);
                     break;
             }
         }
+
+        #endregion
     }
 }
