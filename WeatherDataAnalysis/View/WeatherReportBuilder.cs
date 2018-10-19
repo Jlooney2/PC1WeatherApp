@@ -87,11 +87,11 @@ namespace WeatherDataAnalysis.View
             var averageHigh = daysForReport.GetAverageHighTempForEachMonth();
             var averageLow = daysForReport.GetAverageLowTempForEachMonth();
 
-            for (var i = 0; i < daysForReport.CollectionGroupedByMonth.Count; i++)
+            for (var i = 0; i < daysForReport.GroupByMonth().Count; i++)
             {
                 var monthName = highestTemp[i][0].Date.ToString("MMMM", CultureInfo.InvariantCulture);
                 var year = highestTemp[i][0].Date.Year;
-                var daysOfData = $" ({daysForReport.CollectionGroupedByMonth[i].Count} days of data)";
+                var daysOfData = $" ({daysForReport.GroupByMonth()[i].Count} days of data)";
                 report.Append(monthName + $" {year}" + daysOfData + Environment.NewLine);
 
                 this.formatHighestTempForMonths(highestTemp, i, report);

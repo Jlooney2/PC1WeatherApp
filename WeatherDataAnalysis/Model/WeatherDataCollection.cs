@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,17 +8,9 @@ namespace WeatherDataAnalysis.Model
     /// <summary>
     ///     Defines a collection for Temperature data
     /// </summary>
-    public class WeatherDataCollection
+    public class WeatherDataCollection : ICollection<WeatherData>
     {
-        #region Properties
-
-        /// <summary>
-        ///     Gets the days collection.
-        /// </summary>
-        /// <value>
-        ///     The days collection.
-        /// </value>
-        public List<WeatherData> DaysCollection { get; }
+        #region Data members
 
         /// <summary>
         ///     Gets the collection grouped by month.
@@ -25,15 +18,15 @@ namespace WeatherDataAnalysis.Model
         /// <value>
         ///     The collection grouped by month.
         /// </value>
-        public List<List<WeatherData>> CollectionGroupedByMonth { get; private set; }
+        private readonly ICollection<WeatherData> DaysCollection;
 
-        /// <summary>
-        /// Gets all years.
-        /// </summary>
-        /// <value>
-        /// All years.
-        /// </value>
-        public List<int> AllYears { get; private set; }
+        #endregion
+
+        #region Properties
+
+        public int Count => this.DaysCollection.Count;
+
+        public bool IsReadOnly => this.DaysCollection.IsReadOnly;
 
         #endregion
 
@@ -45,8 +38,6 @@ namespace WeatherDataAnalysis.Model
         public WeatherDataCollection()
         {
             this.DaysCollection = new List<WeatherData>();
-            this.CollectionGroupedByMonth = new List<List<WeatherData>>();
-            this.AllYears = new List<int>();
         }
 
         #endregion
@@ -57,9 +48,45 @@ namespace WeatherDataAnalysis.Model
         ///     Adds the specified new day.
         /// </summary>
         /// <param name="newDay">The new day.</param>
+        /// <exception cref="NullReferenceException">newDay</exception>
         public void Add(WeatherData newDay)
         {
+            if (newDay == null)
+            {
+                throw new NullReferenceException(nameof(newDay));
+            }
+
             this.DaysCollection.Add(newDay);
+        }
+
+        public void Clear()
+        {
+            this.DaysCollection.Clear();
+        }
+
+        public bool Contains(WeatherData item)
+        {
+            return this.DaysCollection.Contains(item);
+        }
+
+        public void CopyTo(WeatherData[] array, int arrayIndex)
+        {
+            this.DaysCollection.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(WeatherData item)
+        {
+            return this.DaysCollection.Remove(item);
+        }
+
+        public IEnumerator<WeatherData> GetEnumerator()
+        {
+            return this.DaysCollection.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.DaysCollection.GetEnumerator();
         }
 
         /// <summary>
@@ -69,11 +96,10 @@ namespace WeatherDataAnalysis.Model
         public List<WeatherData> GetDaysWithHighestTempForAYear()
         {
             var highestTemp = this.DaysCollection.Max(day => day.High);
-            var daysWithHighestTemp = this.DaysCollection.FindAll(day => day.High == highestTemp);
+            var daysWithHighestTemp = this.DaysCollection.Where(day => day.High == highestTemp).ToList();
             return daysWithHighestTemp;
         }
 
-        
         /// <summary>
         ///     Gets the days with the lowest high temperature by year.
         /// </summary>
@@ -81,7 +107,7 @@ namespace WeatherDataAnalysis.Model
         public List<WeatherData> GetDaysWithLowestHighTempByYear()
         {
             var lowestHigh = this.DaysCollection.Min(x => x.High);
-            var daysWithLowestHighTemp = this.DaysCollection.FindAll(day => day.High == lowestHigh);
+            var daysWithLowestHighTemp = this.DaysCollection.Where(day => day.High == lowestHigh).ToList();
             return daysWithLowestHighTemp;
         }
 
@@ -92,7 +118,7 @@ namespace WeatherDataAnalysis.Model
         public List<WeatherData> GetDaysWithLowestTempByYear()
         {
             var lowestTemp = this.DaysCollection.Min(day => day.Low);
-            var daysWithLowestTemp = this.DaysCollection.FindAll(day => day.Low == lowestTemp);
+            var daysWithLowestTemp = this.DaysCollection.Where(day => day.Low == lowestTemp).ToList();
             return daysWithLowestTemp;
         }
 
@@ -103,7 +129,7 @@ namespace WeatherDataAnalysis.Model
         public List<WeatherData> GetDaysWithHighestLowTempByYear()
         {
             var highestLow = this.DaysCollection.Max(day => day.Low);
-            var daysWithHighestLowTemp = this.DaysCollection.FindAll(day => day.Low == highestLow);
+            var daysWithHighestLowTemp = this.DaysCollection.Where(day => day.Low == highestLow).ToList();
             return daysWithHighestLowTemp;
         }
 
@@ -135,7 +161,7 @@ namespace WeatherDataAnalysis.Model
         {
             var daysWithHighestTemps = new List<List<WeatherData>>();
 
-            foreach (var current in this.CollectionGroupedByMonth)
+            foreach (var current in this.GroupByMonth())
             {
                 this.getHighestTempInAMonth(current, daysWithHighestTemps);
             }
@@ -159,7 +185,7 @@ namespace WeatherDataAnalysis.Model
         {
             var daysWithLowestTemps = new List<List<WeatherData>>();
 
-            foreach (var current in this.CollectionGroupedByMonth)
+            foreach (var current in this.GroupByMonth())
             {
                 getLowestTempInAMonth(current, daysWithLowestTemps);
             }
@@ -182,7 +208,7 @@ namespace WeatherDataAnalysis.Model
         public List<double> GetAverageHighTempForEachMonth()
         {
             var averageHighs = new List<double>();
-            foreach (var current in this.CollectionGroupedByMonth)
+            foreach (var current in this.GroupByMonth())
             {
                 var averageHigh = current.Average(day => day.High);
                 averageHighs.Add(averageHigh);
@@ -198,7 +224,7 @@ namespace WeatherDataAnalysis.Model
         public List<double> GetAverageLowTempForEachMonth()
         {
             var averageLows = new List<double>();
-            foreach (var current in this.CollectionGroupedByMonth)
+            foreach (var current in this.GroupByMonth())
             {
                 var averageLow = current.Average(day => day.Low);
                 averageLows.Add(averageLow);
@@ -214,7 +240,7 @@ namespace WeatherDataAnalysis.Model
         /// <returns>The number of days with a temperature greater than the specified value</returns>
         public int GetDaysWithTempGreaterThanEqualTo(int lowerBound)
         {
-            var highDays = this.DaysCollection.FindAll(day => day.High >= lowerBound || day.Low >= lowerBound).ToList();
+            var highDays = this.DaysCollection.Where(day => day.High >= lowerBound || day.Low >= lowerBound).ToList();
             return highDays.Count;
         }
 
@@ -225,27 +251,25 @@ namespace WeatherDataAnalysis.Model
         /// <returns>The number of days with a temperature less than the specified value</returns>
         public int GetDaysWithTempLessThanEqualTo(int upperBound)
         {
-            var days = this.DaysCollection.FindAll(day => day.High <= upperBound || day.Low <= upperBound).ToList();
+            var days = this.DaysCollection.Where(day => day.High <= upperBound || day.Low <= upperBound).ToList();
             return days.Count;
         }
 
         /// <summary>
         ///     Groups the temperature data by month.
         /// </summary>
-        public void GroupByMonth()
+        public List<List<WeatherData>> GroupByMonth()
         {
-            this.CollectionGroupedByMonth = this.DaysCollection.GroupBy(day => day.Date.Month).Select(group => group.ToList()).ToList();
+            return this.DaysCollection.GroupBy(day => day.Date.Month).Select(group => group.ToList()).ToList();
         }
 
-
-
         /// <summary>
-        /// Groups the by year.
+        ///     Groups the by year.
         /// </summary>
         /// <returns> A collection grouped by years</returns>
         public List<List<WeatherData>> GroupByYear()
         {
-            return this.DaysCollection.GroupBy(x => x.Date.Year).Select(group => group.ToList()).ToList(); 
+            return this.DaysCollection.GroupBy(x => x.Date.Year).Select(group => group.ToList()).ToList();
         }
 
         #endregion
