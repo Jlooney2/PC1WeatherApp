@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using WeatherDataAnalysis.Model;
@@ -18,17 +17,15 @@ namespace WeatherDataAnalysis.DataTier
         /// <value>
         /// The error messages.
         /// </value>
-        public StringBuilder errorMessages { get; private set; }
-        private const int Date = 0;
-        private const int High = 1;
-        private const int Low = 2;
+        public StringBuilder ErrorMessages { get;}
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WeatherFileParser"/> class.
         /// </summary>
         public WeatherFileParser()
         {
-            this.errorMessages = new StringBuilder();
+            this.ErrorMessages = new StringBuilder();
         }
 
         /// <summary>
@@ -39,7 +36,7 @@ namespace WeatherDataAnalysis.DataTier
         public async Task<WeatherDataCollection> ParseTemperatureFileAsync(StorageFile tempFile)
         {
             var days = new WeatherDataCollection();
-            string fileText = await FileIO.ReadTextAsync(tempFile);
+            var fileText = await FileIO.ReadTextAsync(tempFile);
 
             var lines = fileText.Split(Environment.NewLine);
             var lineNumber = 0;
@@ -49,15 +46,15 @@ namespace WeatherDataAnalysis.DataTier
                 try
                 {
                     var fields = day.Split(",");
-                    var date = DateTime.Parse(fields[Date]);
-                    var high = Convert.ToInt16(fields[High]);
-                    var low = Convert.ToInt16(fields[Low]);
+                    var date = DateTime.Parse(fields[(int)WeatherDataFields.Date]);
+                    var high = Convert.ToInt16(fields[(int)WeatherDataFields.High]);
+                    var low = Convert.ToInt16(fields[(int)WeatherDataFields.Low]);
 
                     days.Add(new WeatherData(date, high, low));
                 }
                 catch (Exception)
                 {
-                    this.errorMessages.Append($"Corrupt Data on line {lineNumber} \n");
+                    this.ErrorMessages.Append($"Corrupt Data on line {lineNumber} {Environment.NewLine}");
                 }
                 
                 

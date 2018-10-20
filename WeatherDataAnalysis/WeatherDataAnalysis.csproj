@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="DataTier\FileMerger.cs" />
     <Compile Include="DataTier\WeatherFileParser.cs" />
+    <Compile Include="Model\WeatherDataFields.cs" />
     <Compile Include="View\ReplaceOrKeepDialog.xaml.cs">
       <DependentUpon>ReplaceOrKeepDialog.xaml</DependentUpon>
     </Compile>

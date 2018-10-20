@@ -31,7 +31,7 @@ namespace WeatherDataAnalysis
         /// </summary>
         public const int ApplicationWidth = 625;
 
-        private WeatherDataCollection currWeatherCollection;
+        private WeatherDataCollection currentWeatherCollection;
         private StringBuilder errors;
         #endregion
 
@@ -48,7 +48,7 @@ namespace WeatherDataAnalysis
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
 
-            this.currWeatherCollection = null;
+            this.currentWeatherCollection = null;
             this.errors = null;
         }
 
@@ -85,17 +85,17 @@ namespace WeatherDataAnalysis
 
                 var newWeatherCollection = await fileParser.ParseTemperatureFileAsync(chosenFile);
 
-                if (this.currWeatherCollection == null)
+                if (this.currentWeatherCollection == null)
                 {
-                    this.currWeatherCollection = newWeatherCollection;
+                    this.currentWeatherCollection = newWeatherCollection;
                 }
                 else
                 {
                     await this.handleNewFileWithExistingFile(newWeatherCollection);
                 }
 
-                this.errors = fileParser.errorMessages;
-                var report = reportBuilder.CreateReport(this.currWeatherCollection);
+                this.errors = fileParser.ErrorMessages;
+                var report = reportBuilder.CreateReport(this.currentWeatherCollection);
                 this.summaryTextBox.Text = report + this.errors;
             }
         }
@@ -114,14 +114,14 @@ namespace WeatherDataAnalysis
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    this.currWeatherCollection = newWeatherCollection;
+                    this.currentWeatherCollection = newWeatherCollection;
                     break;
                 case ContentDialogResult.Secondary:
                 {
                     var fileMerger = new FileMerger();
                     newWeatherCollection =
-                        await fileMerger.MergeWeatherDataCollections(this.currWeatherCollection, newWeatherCollection);
-                    this.currWeatherCollection = newWeatherCollection;
+                        await fileMerger.MergeWeatherDataCollections(this.currentWeatherCollection, newWeatherCollection);
+                    this.currentWeatherCollection = newWeatherCollection;
                     break;
                 }
             }
@@ -129,12 +129,12 @@ namespace WeatherDataAnalysis
 
         private void BoundsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (this.currWeatherCollection != null)
+            if (this.currentWeatherCollection != null)
             {
                 int.TryParse(this.LowerBoundTextBox.Text, out var lowerbound);
                 int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
                 var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
-                var report = reportBuilder.CreateReport(this.currWeatherCollection);
+                var report = reportBuilder.CreateReport(this.currentWeatherCollection);
                 this.summaryTextBox.Text = report + this.errors;
             }
         }

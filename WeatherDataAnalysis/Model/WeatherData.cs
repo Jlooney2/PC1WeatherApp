@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using Windows.UI.Popups;
 
 namespace WeatherDataAnalysis.Model
 {
@@ -8,7 +6,7 @@ namespace WeatherDataAnalysis.Model
     /// <summary>
     /// Defines a temperature data object
     /// </summary>
-    public class WeatherData
+    public class WeatherData : IComparable<WeatherData>
     {
         /// <summary>
         /// Gets the date.
@@ -45,6 +43,11 @@ namespace WeatherDataAnalysis.Model
             this.Low = lowestTemperature;
         }
 
-       
+        /// <summary>
+        /// Compares to.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns>an int signifying how the data compares</returns>
+        public int CompareTo(WeatherData other) => this.Date.CompareTo(other.Date);
     }
 }

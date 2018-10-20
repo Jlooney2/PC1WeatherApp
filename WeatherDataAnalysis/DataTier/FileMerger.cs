@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using WeatherDataAnalysis.Model;
@@ -51,36 +53,48 @@ namespace WeatherDataAnalysis.DataTier
 
             var updatedWeatherDataCollection = new WeatherDataCollection();
 
-            addNonConflictingData(oldWeatherDataCollection, newWeatherDataCollection, updatedWeatherDataCollection);
+            this.addNonConflictingData(updatedWeatherDataCollection);
 
-            foreach (var currDay in this.newWeatherDataCollection)
+            foreach (var conflictingDay in this.newWeatherDataCollection)
             {
-                if (this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(currDay.Date)) &&
+                if (this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(conflictingDay.Date)) &&
                     !this.isDoForAllChecked)
                 {
-                    var keepOrReplace = new ReplaceOrKeepDialog(currDay);
+                    var keepOrReplace = new ReplaceOrKeepDialog(conflictingDay);
                     this.chosenResult = await keepOrReplace.ShowAsync();
-                    this.isDoForAllChecked = keepOrReplace.isDoForAllChecked;
+                    this.isDoForAllChecked = keepOrReplace.IsDoForAllChecked;
                 }
 
-                this.addConflictingDayToUpdatedCollection(currDay, updatedWeatherDataCollection);
+                this.addConflictingDayToUpdatedCollection(conflictingDay, updatedWeatherDataCollection);
             }
 
+            var tempWeatherDataCollection = updatedWeatherDataCollection.ToList();
+            tempWeatherDataCollection.Sort();
+            updatedWeatherDataCollection.Clear();
+
+            foreach (var day in tempWeatherDataCollection)
+            {
+                updatedWeatherDataCollection.Add(day);
+            }
             return updatedWeatherDataCollection;
         }
 
-        private static void addNonConflictingData(WeatherDataCollection oldWeatherDataCollection,
-            WeatherDataCollection newWeatherDataCollection, WeatherDataCollection updatedWeatherDataCollection)
+        private void addNonConflictingData( WeatherDataCollection updatedWeatherDataCollection)
         {
-            var oldNonConflictingData = oldWeatherDataCollection
-                                        .Where(oldDay =>
-                                            !newWeatherDataCollection.Any(newDay => newDay.Date.Equals(oldDay.Date)))
-                                        .ToList();
+            var oldNonConflictingData = this.oldWeatherDataCollection.Where(oldDay => !this.newWeatherDataCollection.Any(newDay => newDay.Date.Equals(oldDay.Date))).ToList();
+            var newNonConflictingData = this.newWeatherDataCollection.Where(newDay => !this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(newDay.Date))).ToList();
+
             foreach (var day in oldNonConflictingData)
             {
                 updatedWeatherDataCollection.Add(day);
-                newWeatherDataCollection.Remove(day);
             }
+
+            foreach (var day in newNonConflictingData)
+            {
+                updatedWeatherDataCollection.Add(day);
+            }
+            
+           
         }
 
         private void addConflictingDayToUpdatedCollection(WeatherData currDay,

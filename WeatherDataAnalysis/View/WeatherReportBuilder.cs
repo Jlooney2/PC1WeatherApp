@@ -90,12 +90,12 @@ namespace WeatherDataAnalysis.View
 
             for (var i = 0; i < daysForReport.GroupByMonth().Count; i++)
             {
-                while (highestTemp[i][0].Date.Month != monthCount)
+                while (highestTemp[i][0].Date.Month != monthCount && monthCount < 12)
                 {
                     var prevMonthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(monthCount);
-                    var prevMonthyear = highestTemp[i][0].Date.Year;
+                    var prevMonthYear = highestTemp[i][0].Date.Year;
                     var prevMonthsDaysOfData = $" (0 days of data)";
-                    report.Append(prevMonthName + $" {prevMonthyear}" + prevMonthsDaysOfData + Environment.NewLine);
+                    report.Append(prevMonthName + $" {prevMonthYear}" + prevMonthsDaysOfData + Environment.NewLine);
                     report.Append(Environment.NewLine);
                     monthCount++;
                 }
@@ -217,7 +217,7 @@ namespace WeatherDataAnalysis.View
 
         private string getDaySuffix(DateTime day)
         {
-            var suffix = "";
+            string suffix;
             var dayOfMonth = day.Date.Day;
 
             switch (dayOfMonth % 10)
