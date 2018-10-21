@@ -307,12 +307,24 @@ namespace WeatherDataAnalysis.Model
             return this.daysCollection.GroupBy(x => x.Date.Year).Select(group => group.ToList()).ToList();
         }
 
+        /// <summary>
+        /// Counts the days with high between.
+        /// </summary>
+        /// <param name="lowerbound">The lowerbound.</param>
+        /// <param name="upperbound">The upperbound.</param>
+        /// <returns>number of days between the bounds</returns>
         public int CountDaysWithHighBetween(int lowerbound, int upperbound)
         {
            var days = this.daysCollection.Where(day => day.High >= lowerbound && day.High <= upperbound).ToList();
             return days.Count;
         }
 
+        /// <summary>
+        /// Counts the days with low between.
+        /// </summary>
+        /// <param name="lowerbound">The lowerbound.</param>
+        /// <param name="upperbound">The upperbound.</param>
+        /// <returns>number of days between the bounds</returns>
         public int CountDaysWithLowBetween(int lowerbound, int upperbound)
         {
             var days = this.daysCollection.Where(day => day.Low >= lowerbound && day.Low <= upperbound).ToList();

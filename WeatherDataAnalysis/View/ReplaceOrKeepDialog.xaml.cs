@@ -26,19 +26,19 @@ namespace WeatherDataAnalysis.View
         /// The chosen result.
         /// </value>
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceOrKeepDialog"/> class.
+        /// Initializes a new instance of the <see cref="View.ReplaceOrKeepDialog"/> class.
         /// </summary>
         public ReplaceOrKeepDialog(WeatherData conflictingDay)
         {
             this.InitializeComponent();
-            this.DescriptionTextBlock.Text = $"{conflictingDay.Date.ToShortDateString()} appears twice, How would you like to handle this?";
+            this.descriptionTextBlock.Text = $"{conflictingDay.Date.ToShortDateString()} appears twice, How would you like to handle this?";
             this.IsDoForAllChecked = false;
             
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            if ((bool) this.DoForAllCheckBox.IsChecked)
+            if ((bool) this.doForAllCheckBox.IsChecked)
             {
                 this.IsDoForAllChecked = true;
             }
@@ -47,7 +47,7 @@ namespace WeatherDataAnalysis.View
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            if ((bool )this.DoForAllCheckBox.IsChecked)
+            if ((bool )this.doForAllCheckBox.IsChecked)
             {
                 this.IsDoForAllChecked = true;
             }

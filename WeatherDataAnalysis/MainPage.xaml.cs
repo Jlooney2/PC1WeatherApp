@@ -79,8 +79,8 @@ namespace WeatherDataAnalysis
             {
                 var fileParser = new WeatherFileParser();
 
-                int.TryParse(this.LowerBoundTextBox.Text, out var lowerbound);
-                int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
+                int.TryParse(this.lowerBoundTextBox.Text, out var lowerbound);
+                int.TryParse(this.upperBoundTextBox.Text, out var upperbound);
                 var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
 
                 var newWeatherCollection = await fileParser.ParseTemperatureFileAsync(chosenFile);
@@ -131,8 +131,8 @@ namespace WeatherDataAnalysis
         {
             if (this.currentWeatherCollection != null)
             {
-                int.TryParse(this.LowerBoundTextBox.Text, out var lowerbound);
-                int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
+                int.TryParse(this.lowerBoundTextBox.Text, out var lowerbound);
+                int.TryParse(this.upperBoundTextBox.Text, out var upperbound);
                 var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
                 var report = reportBuilder.CreateReport(this.currentWeatherCollection,this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
@@ -161,8 +161,8 @@ namespace WeatherDataAnalysis
         {
             if (this.currentWeatherCollection != null)
             {
-                int.TryParse(this.LowerBoundTextBox.Text, out var lowerbound);
-                int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
+                int.TryParse(this.lowerBoundTextBox.Text, out var lowerbound);
+                int.TryParse(this.upperBoundTextBox.Text, out var upperbound);
                 var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
                 var report = reportBuilder.CreateReport(this.currentWeatherCollection, this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
@@ -173,6 +173,14 @@ namespace WeatherDataAnalysis
         {
             this.currentWeatherCollection = null;
             this.summaryTextBox.Text = string.Empty;
+        }
+
+        private void saveToFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.currentWeatherCollection != null)
+            {
+                FileSaver.SaveToCsv(this.currentWeatherCollection);
+            }
         }
     }
 }
