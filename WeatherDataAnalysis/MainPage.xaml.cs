@@ -79,9 +79,9 @@ namespace WeatherDataAnalysis
             {
                 var fileParser = new WeatherFileParser();
 
-                int.TryParse(this.lowerBoundTextBox.Text, out var lowerbound);
-                int.TryParse(this.upperBoundTextBox.Text, out var upperbound);
-                var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
+                int.TryParse(this.lowerBoundTextBox.Text, out var lowerBound);
+                int.TryParse(this.upperBoundTextBox.Text, out var upperBound);
+                var reportBuilder = new WeatherReportBuilder(lowerBound, upperBound);
 
                 var newWeatherCollection = await fileParser.ParseTemperatureFileAsync(chosenFile);
 
@@ -131,15 +131,15 @@ namespace WeatherDataAnalysis
         {
             if (this.currentWeatherCollection != null)
             {
-                int.TryParse(this.lowerBoundTextBox.Text, out var lowerbound);
-                int.TryParse(this.upperBoundTextBox.Text, out var upperbound);
-                var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
+                int.TryParse(this.lowerBoundTextBox.Text, out var lowerBound);
+                int.TryParse(this.upperBoundTextBox.Text, out var upperBound);
+                var reportBuilder = new WeatherReportBuilder(lowerBound, upperBound);
                 var report = reportBuilder.CreateReport(this.currentWeatherCollection,this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
             }
         }
 
-        private int getBucketSize()
+        private int getBucketSize() 
         {
             if ((bool)this.rbBucketSizeFive.IsChecked)
             {
@@ -161,9 +161,9 @@ namespace WeatherDataAnalysis
         {
             if (this.currentWeatherCollection != null)
             {
-                int.TryParse(this.lowerBoundTextBox.Text, out var lowerbound);
-                int.TryParse(this.upperBoundTextBox.Text, out var upperbound);
-                var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
+                int.TryParse(this.lowerBoundTextBox.Text, out var lowerBound);
+                int.TryParse(this.upperBoundTextBox.Text, out var upperBound);
+                var reportBuilder = new WeatherReportBuilder(lowerBound, upperBound);
                 var report = reportBuilder.CreateReport(this.currentWeatherCollection, this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
             }

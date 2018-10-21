@@ -97,7 +97,7 @@ namespace WeatherDataAnalysis.DataTier
            
         }
 
-        private void addConflictingDayToUpdatedCollection(WeatherData currDay,
+        private void addConflictingDayToUpdatedCollection(WeatherData currentDay,
             WeatherDataCollection updatedWeatherDataCollection)
         {
             switch (this.chosenResult)
@@ -105,16 +105,17 @@ namespace WeatherDataAnalysis.DataTier
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var oldDay = this.oldWeatherDataCollection.Single(x => x.Date.Equals(currDay.Date));
+                        var oldDay = this.oldWeatherDataCollection.Single(x => x.Date.Equals(currentDay.Date));
                         updatedWeatherDataCollection.Add(oldDay);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Console.WriteLine(e.Message);
                     }
 
                     break;
                 case ContentDialogResult.Secondary:
-                    updatedWeatherDataCollection.Add(currDay);
+                    updatedWeatherDataCollection.Add(currentDay);
                     break;
             }
         }

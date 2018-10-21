@@ -310,24 +310,26 @@ namespace WeatherDataAnalysis.Model
         /// <summary>
         /// Counts the days with high between.
         /// </summary>
-        /// <param name="lowerbound">The lowerbound.</param>
-        /// <param name="upperbound">The upperbound.</param>
-        /// <returns>number of days between the bounds</returns>
-        public int CountDaysWithHighBetween(int lowerbound, int upperbound)
+        /// <param name="lowerBound">The lowerBound.</param>
+        /// <param name="upperBound">The upperBound.</param>
+        /// <returns>
+        /// number of days between the bounds
+        /// </returns>
+        public int CountDaysWithHighBetween(int lowerBound, int upperBound)
         {
-           var days = this.daysCollection.Where(day => day.High >= lowerbound && day.High <= upperbound).ToList();
+           var days = this.daysCollection.Where(day => day.High >= lowerBound && day.High <= upperBound).ToList();
             return days.Count;
         }
 
         /// <summary>
         /// Counts the days with low between.
         /// </summary>
-        /// <param name="lowerbound">The lowerbound.</param>
-        /// <param name="upperbound">The upperbound.</param>
+        /// <param name="lowerBound">The lowerBound.</param>
+        /// <param name="upperBound">The upperBound.</param>
         /// <returns>number of days between the bounds</returns>
-        public int CountDaysWithLowBetween(int lowerbound, int upperbound)
+        public int CountDaysWithLowBetween(int lowerBound, int upperBound)
         {
-            var days = this.daysCollection.Where(day => day.Low >= lowerbound && day.Low <= upperbound).ToList();
+            var days = this.daysCollection.Where(day => day.Low >= lowerBound && day.Low <= upperBound).ToList();
             return days.Count;
         }
 

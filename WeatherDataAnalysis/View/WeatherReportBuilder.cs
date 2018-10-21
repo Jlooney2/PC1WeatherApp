@@ -13,8 +13,8 @@ namespace WeatherDataAnalysis.View
     {
         #region Data members
 
-        private readonly int lowerbound;
-        private readonly int upperbound;
+        private readonly int lowerBound;
+        private readonly int upperBound;
         private int bucketSize;
         #endregion
 
@@ -23,12 +23,12 @@ namespace WeatherDataAnalysis.View
         /// <summary>
         ///     Initializes a new instance of the <see cref="WeatherReportBuilder" /> class.
         /// </summary>
-        /// <param name="lowerbound">The lowerbound.</param>
-        /// <param name="upperbound">The upperbound.</param>
-        public WeatherReportBuilder(int lowerbound, int upperbound)
+        /// <param name="lowerBound">The lowerBound.</param>
+        /// <param name="upperBound">The upperBound.</param>
+        public WeatherReportBuilder(int lowerBound, int upperBound)
         {
-            this.lowerbound = lowerbound;
-            this.upperbound = upperbound;
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
         }
 
         #endregion
@@ -110,7 +110,7 @@ namespace WeatherDataAnalysis.View
 
             while (initialTierLowerBound <= finalTierUpperBound)
             {
-                var countOfDays = 0;
+                int countOfDays;
                 if (highOrLow.Equals(HighLow.High))
                 {
                     countOfDays = tempWeatherCollection.CountDaysWithHighBetween(initialTierLowerBound, initialTierUpperBound);
@@ -184,9 +184,9 @@ namespace WeatherDataAnalysis.View
 
         private void createDayWithSuffix(List<List<WeatherData>> temps, int i, StringBuilder report)
         {
-            foreach (var currLow in temps[i])
+            foreach (var currentLow in temps[i])
             {
-                var day = string.Format(currLow.Date.Day + "{0}", this.getDaySuffix(currLow.Date));
+                var day = string.Format(currentLow.Date.Day + "{0}", this.getDaySuffix(currentLow.Date));
                 report.Append(day + " ");
             }
         }
@@ -218,10 +218,10 @@ namespace WeatherDataAnalysis.View
             report.Append($"The average low: {daysForReport.GetAverageLowTempForYear():F}" +
                           Environment.NewLine);
             report.Append(
-                $"Number of days with temp {this.upperbound} or greater: {daysForReport.GetDaysWithTempGreaterThanEqualTo(this.upperbound)}" +
+                $"Number of days with temp {this.upperBound} or greater: {daysForReport.GetDaysWithTempGreaterThanEqualTo(this.upperBound)}" +
                 Environment.NewLine);
             report.Append(
-                $"Number of days with temp {this.lowerbound} or less: {daysForReport.GetDaysWithTempLessThanEqualTo(this.lowerbound)}" +
+                $"Number of days with temp {this.lowerBound} or less: {daysForReport.GetDaysWithTempLessThanEqualTo(this.lowerBound)}" +
                 Environment.NewLine);
         }
 
