@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using WeatherDataAnalysis.Model;
@@ -40,14 +38,14 @@ namespace WeatherDataAnalysis.DataTier
         /// <summary>
         ///     Merges the weather data collections.
         /// </summary>
-        /// <param name="oldWeatherDataCollection">The old weather data collection.</param>
+        /// <param name="currentDataCollection">The old weather data collection.</param>
         /// <param name="newWeatherDataCollection">The new weather data collection.</param>
         /// <returns></returns>
         public async Task<WeatherDataCollection> MergeWeatherDataCollections(
-            WeatherDataCollection oldWeatherDataCollection, WeatherDataCollection newWeatherDataCollection)
+            WeatherDataCollection currentDataCollection, WeatherDataCollection newWeatherDataCollection)
         {
-            this.oldWeatherDataCollection = oldWeatherDataCollection ??
-                                            throw new ArgumentNullException(nameof(oldWeatherDataCollection));
+            this.oldWeatherDataCollection = this.oldWeatherDataCollection ??
+                                            throw new ArgumentNullException(nameof(this.oldWeatherDataCollection));
             this.newWeatherDataCollection = newWeatherDataCollection ??
                                             throw new ArgumentNullException(nameof(newWeatherDataCollection));
 

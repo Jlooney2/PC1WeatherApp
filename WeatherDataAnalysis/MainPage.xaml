@@ -20,6 +20,10 @@
         <TextBlock x:Name="UpperBoundTextBlock" HorizontalAlignment="Left" Margin="12,420,0,0" Text="Enter high temperature:" TextWrapping="Wrap" VerticalAlignment="Top" Width="179" Height="30" AutomationProperties.HelpText=""/>
         <TextBox x:Name="LowerBoundTextBox" HorizontalAlignment="Left" Margin="198,367,0,0" Text="32" VerticalAlignment="Top" Width="248" TextChanged="BoundsTextBox_TextChanged"/>
         <TextBox x:Name="UpperBoundTextBox" HorizontalAlignment="Left" Margin="198,414,0,0" Text="90" VerticalAlignment="Top" Width="248" TextChanged="BoundsTextBox_TextChanged"/>
+        <RadioButton x:Name="rbBucketSizeFive" Content="5" HorizontalAlignment="Left" Margin="198,454,0,0" VerticalAlignment="Top" GroupName="BucketSize" Width="60" Checked="bucketSize_CheckedChanged"/>
+        <RadioButton x:Name="rbBucketSizeTen" Content="10" HorizontalAlignment="Left" Margin="262,454,0,0" VerticalAlignment="Top" GroupName="BucketSize" IsChecked="True" Width="60" Checked="bucketSize_CheckedChanged"/>
+        <RadioButton x:Name="rbBucketSizeTwenty" Content="20" HorizontalAlignment="Left" Margin="326,455,0,0" VerticalAlignment="Top" GroupName="BucketSize" Checked="bucketSize_CheckedChanged"/>
+        <TextBlock x:Name="BucketSizeTextBlock" HorizontalAlignment="Left" Margin="12,460,0,0" Text="Bucket Size:" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>

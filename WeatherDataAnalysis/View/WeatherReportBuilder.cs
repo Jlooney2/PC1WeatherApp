@@ -15,13 +15,13 @@ namespace WeatherDataAnalysis.View
 
         private readonly int lowerbound;
         private readonly int upperbound;
-
+        private int bucketSize;
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WeatherReportBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="WeatherReportBuilder" /> class.
         /// </summary>
         /// <param name="lowerbound">The lowerbound.</param>
         /// <param name="upperbound">The upperbound.</param>
@@ -36,14 +36,17 @@ namespace WeatherDataAnalysis.View
         #region Methods
 
         /// <summary>
-        ///     Creates the report.
+        /// Creates the report.
         /// </summary>
         /// <param name="daysForReport">The days for report.</param>
-        /// <returns>A full report outlining specific information based the supplied weather data</returns>
-        public string CreateReport(WeatherDataCollection daysForReport)
+        /// <param name="bucketSize">Size of the bucket.</param>
+        /// <returns>
+        /// A full report outlining specific information based the supplied weather data
+        /// </returns>
+        public string CreateReport(WeatherDataCollection daysForReport,int bucketSize)
         {
             var report = new StringBuilder();
-
+            this.bucketSize = bucketSize;
             var years = daysForReport.GroupByYear();
             foreach (var year in years)
             {
@@ -52,8 +55,6 @@ namespace WeatherDataAnalysis.View
                 {
                     tempWeatherCollection.Add(day);
                 }
-
-               
             }
 
             report.Append(Environment.NewLine);
@@ -73,15 +74,60 @@ namespace WeatherDataAnalysis.View
                 {
                     tempWeatherCollection.Add(day);
                 }
+
                 this.createOverview(tempWeatherCollection, report);
                 report.Append(Environment.NewLine);
+
+                var upperBound = tempWeatherCollection.GetDaysWithHighestTempForAYear()[0].High;
+                var lowerBound = tempWeatherCollection.GetDaysWithLowestHighTempByYear()[0].High;
+                
+
+                report.Append("Highest Temp Histogram" + Environment.NewLine);
+                this.createHistogram(report, tempWeatherCollection,lowerBound,upperBound,this.bucketSize,HighLow.High);
+                report.Append(Environment.NewLine);
+
+
+                upperBound = tempWeatherCollection.GetDaysWithHighestLowTempByYear()[0].Low;
+                lowerBound = tempWeatherCollection.GetDaysWithLowestTempByYear()[0].Low;
+                
+
+                report.Append("Lowest Temp Histogram" + Environment.NewLine);
+                this.createHistogram(report,tempWeatherCollection,lowerBound,upperBound,this.bucketSize, HighLow.Low);
+                report.Append(Environment.NewLine);
+
+
                 this.createMonthlyBreakdown(tempWeatherCollection, report);
+            }
+        }
+
+        private void createHistogram(StringBuilder report, WeatherDataCollection tempWeatherCollection, int lowerBound, int upperBound,int bucketSize, HighLow highOrLow)
+        {
+            var initialTierLowerBound = lowerBound - (lowerBound % bucketSize);
+            int initialOffset = 1; 
+            var initialTierUpperBound = initialTierLowerBound + bucketSize - initialOffset;
+            var highestTierOffset = bucketSize - 1;
+            var finalTierUpperBound = upperBound - upperBound % bucketSize + highestTierOffset;
+
+            while (initialTierLowerBound <= finalTierUpperBound)
+            {
+                var countOfDays = 0;
+                if (highOrLow.Equals(HighLow.High))
+                {
+                    countOfDays = tempWeatherCollection.CountDaysWithHighBetween(initialTierLowerBound, initialTierUpperBound);
+                }
+                else
+                {
+                    countOfDays = tempWeatherCollection.CountDaysWithLowBetween(initialTierLowerBound, initialTierUpperBound);
+                }
+                report.Append(
+                    $"{initialTierLowerBound}-{initialTierUpperBound}: {countOfDays} {Environment.NewLine}");
+                initialTierLowerBound = initialTierLowerBound + bucketSize;
+                initialTierUpperBound = initialTierUpperBound + bucketSize;
             }
         }
 
         private void createMonthlyBreakdown(WeatherDataCollection daysForReport, StringBuilder report)
         {
-            
             var highestTemp = daysForReport.GetDaysWithHighestTempForEachMonth();
             var lowestTemp = daysForReport.GetDaysWithLowestTempForEachMonth();
             var averageHigh = daysForReport.GetAverageHighTempForEachMonth();
@@ -94,7 +140,7 @@ namespace WeatherDataAnalysis.View
                 {
                     var prevMonthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(monthCount);
                     var prevMonthYear = highestTemp[i][0].Date.Year;
-                    var prevMonthsDaysOfData = $" (0 days of data)";
+                    var prevMonthsDaysOfData = " (0 days of data)";
                     report.Append(prevMonthName + $" {prevMonthYear}" + prevMonthsDaysOfData + Environment.NewLine);
                     report.Append(Environment.NewLine);
                     monthCount++;

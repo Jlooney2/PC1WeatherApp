@@ -95,7 +95,7 @@ namespace WeatherDataAnalysis
                 }
 
                 this.errors = fileParser.ErrorMessages;
-                var report = reportBuilder.CreateReport(this.currentWeatherCollection);
+                var report = reportBuilder.CreateReport(this.currentWeatherCollection, this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
             }
         }
@@ -134,11 +134,39 @@ namespace WeatherDataAnalysis
                 int.TryParse(this.LowerBoundTextBox.Text, out var lowerbound);
                 int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
                 var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
-                var report = reportBuilder.CreateReport(this.currentWeatherCollection);
+                var report = reportBuilder.CreateReport(this.currentWeatherCollection,this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
             }
         }
 
+        private int getBucketSize()
+        {
+            if ((bool)this.rbBucketSizeFive.IsChecked)
+            {
+                return 5;
+            }
+            else if((bool)this.rbBucketSizeTen.IsChecked)
+            {
+                return 10;
+            }
+            else
+            {
+                return 20;
+            }
+        }
+
         #endregion
+
+        private void bucketSize_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.currentWeatherCollection != null)
+            {
+                int.TryParse(this.LowerBoundTextBox.Text, out var lowerbound);
+                int.TryParse(this.UpperBoundTextBox.Text, out var upperbound);
+                var reportBuilder = new WeatherReportBuilder(lowerbound, upperbound);
+                var report = reportBuilder.CreateReport(this.currentWeatherCollection, this.getBucketSize());
+                this.summaryTextBox.Text = report + this.errors;
+            }
+        }
     }
 }

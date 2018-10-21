@@ -198,13 +198,13 @@ namespace WeatherDataAnalysis.Model
 
             foreach (var current in this.GroupByMonth())
             {
-                this.getHighestTempInAMonth(current, daysWithHighestTemps);
+                this.findHighestTempInAMonth(current, daysWithHighestTemps);
             }
 
             return daysWithHighestTemps;
         }
 
-        private void getHighestTempInAMonth(List<WeatherData> current,
+        private void findHighestTempInAMonth(List<WeatherData> current,
             List<List<WeatherData>> daysWithHighestTemps)
         {
             var high = current.Max(day => day.High);
@@ -222,13 +222,13 @@ namespace WeatherDataAnalysis.Model
 
             foreach (var current in this.GroupByMonth())
             {
-                getLowestTempInAMonth(current, daysWithLowestTemps);
+                this.findLowestTempInAMonth(current, daysWithLowestTemps);
             }
 
             return daysWithLowestTemps;
         }
 
-        private static void getLowestTempInAMonth(List<WeatherData> current,
+        private void findLowestTempInAMonth(List<WeatherData> current,
             List<List<WeatherData>> daysWithLowestTemps)
         {
             var low = current.Min(day => day.Low);
@@ -307,7 +307,17 @@ namespace WeatherDataAnalysis.Model
             return this.daysCollection.GroupBy(x => x.Date.Year).Select(group => group.ToList()).ToList();
         }
 
-       
+        public int CountDaysWithHighBetween(int lowerbound, int upperbound)
+        {
+           var days = this.daysCollection.Where(day => day.High >= lowerbound && day.High <= upperbound).ToList();
+            return days.Count;
+        }
+
+        public int CountDaysWithLowBetween(int lowerbound, int upperbound)
+        {
+            var days = this.daysCollection.Where(day => day.Low >= lowerbound && day.Low <= upperbound).ToList();
+            return days.Count;
+        }
 
         #endregion
     }
