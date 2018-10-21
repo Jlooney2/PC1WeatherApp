@@ -168,5 +168,11 @@ namespace WeatherDataAnalysis
                 this.summaryTextBox.Text = report + this.errors;
             }
         }
+
+        private void clearDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.currentWeatherCollection = null;
+            this.summaryTextBox.Text = string.Empty;
+        }
     }
 }

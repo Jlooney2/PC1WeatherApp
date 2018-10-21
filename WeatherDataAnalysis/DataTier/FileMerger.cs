@@ -39,15 +39,15 @@ namespace WeatherDataAnalysis.DataTier
         ///     Merges the weather data collections.
         /// </summary>
         /// <param name="currentDataCollection">The old weather data collection.</param>
-        /// <param name="newWeatherDataCollection">The new weather data collection.</param>
+        /// <param name="newWeatherData">The new weather data collection.</param>
         /// <returns></returns>
         public async Task<WeatherDataCollection> MergeWeatherDataCollections(
-            WeatherDataCollection currentDataCollection, WeatherDataCollection newWeatherDataCollection)
+            WeatherDataCollection currentDataCollection, WeatherDataCollection newWeatherData)
         {
-            this.oldWeatherDataCollection = this.oldWeatherDataCollection ??
-                                            throw new ArgumentNullException(nameof(this.oldWeatherDataCollection));
-            this.newWeatherDataCollection = newWeatherDataCollection ??
-                                            throw new ArgumentNullException(nameof(newWeatherDataCollection));
+            this.oldWeatherDataCollection = currentDataCollection ??
+                                            throw new ArgumentNullException(nameof(this.oldWeatherDataCollection),"Current collection cannot be null.");
+            this.newWeatherDataCollection = newWeatherData ??
+                                            throw new ArgumentNullException(nameof(newWeatherData), "New collection cannot be null.");
 
             var updatedWeatherDataCollection = new WeatherDataCollection();
 
@@ -81,15 +81,17 @@ namespace WeatherDataAnalysis.DataTier
         {
             var oldNonConflictingData = this.oldWeatherDataCollection.Where(oldDay => !this.newWeatherDataCollection.Any(newDay => newDay.Date.Equals(oldDay.Date))).ToList();
             var newNonConflictingData = this.newWeatherDataCollection.Where(newDay => !this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(newDay.Date))).ToList();
-
+            
             foreach (var day in oldNonConflictingData)
             {
                 updatedWeatherDataCollection.Add(day);
+                this.oldWeatherDataCollection.Remove(day);
             }
 
             foreach (var day in newNonConflictingData)
             {
                 updatedWeatherDataCollection.Add(day);
+                this.newWeatherDataCollection.Remove(day);
             }
             
            
