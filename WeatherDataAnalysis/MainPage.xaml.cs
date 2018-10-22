@@ -33,6 +33,8 @@ namespace WeatherDataAnalysis
 
         private WeatherDataCollection currentWeatherCollection;
         private StringBuilder errors;
+        private int upperBound;
+        private int lowerBound;
         #endregion
 
         #region Constructors
@@ -79,9 +81,9 @@ namespace WeatherDataAnalysis
             {
                 var fileParser = new WeatherFileParser();
 
-                int.TryParse(this.lowerBoundTextBox.Text, out var lowerBound);
-                int.TryParse(this.upperBoundTextBox.Text, out var upperBound);
-                var reportBuilder = new WeatherReportBuilder(lowerBound, upperBound);
+                int.TryParse(this.lowerBoundTextBox.Text, out this.lowerBound);
+                int.TryParse(this.upperBoundTextBox.Text, out this.upperBound);
+                var reportBuilder = new WeatherReportBuilder(this.lowerBound, this.upperBound);
 
                 var newWeatherCollection = await fileParser.ParseTemperatureFileAsync(chosenFile);
 
@@ -131,9 +133,9 @@ namespace WeatherDataAnalysis
         {
             if (this.currentWeatherCollection != null)
             {
-                int.TryParse(this.lowerBoundTextBox.Text, out var lowerBound);
-                int.TryParse(this.upperBoundTextBox.Text, out var upperBound);
-                var reportBuilder = new WeatherReportBuilder(lowerBound, upperBound);
+                int.TryParse(this.lowerBoundTextBox.Text, out this.lowerBound);
+                int.TryParse(this.upperBoundTextBox.Text, out this.upperBound);
+                var reportBuilder = new WeatherReportBuilder(this.lowerBound, this.upperBound);
                 var report = reportBuilder.CreateReport(this.currentWeatherCollection,this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
             }
@@ -155,15 +157,11 @@ namespace WeatherDataAnalysis
             }
         }
 
-        #endregion
-
         private void bucketSize_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (this.currentWeatherCollection != null)
-            {
-                int.TryParse(this.lowerBoundTextBox.Text, out var lowerBound);
-                int.TryParse(this.upperBoundTextBox.Text, out var upperBound);
-                var reportBuilder = new WeatherReportBuilder(lowerBound, upperBound);
+            { 
+                var reportBuilder = new WeatherReportBuilder(this.lowerBound, this.upperBound);
                 var report = reportBuilder.CreateReport(this.currentWeatherCollection, this.getBucketSize());
                 this.summaryTextBox.Text = report + this.errors;
             }
@@ -182,5 +180,6 @@ namespace WeatherDataAnalysis
                 FileSaver.SaveToCsv(this.currentWeatherCollection);
             }
         }
+        #endregion
     }
 }
