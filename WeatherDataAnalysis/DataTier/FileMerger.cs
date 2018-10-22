@@ -40,7 +40,7 @@ namespace WeatherDataAnalysis.DataTier
         /// </summary>
         /// <param name="currentDataCollection">The old weather data collection.</param>
         /// <param name="newWeatherData">The new weather data collection.</param>
-        /// <returns></returns>
+        /// <returns> the collection with the data</returns>
         public async Task<WeatherDataCollection> MergeWeatherDataCollections(
             WeatherDataCollection currentDataCollection, WeatherDataCollection newWeatherData)
         {
@@ -48,6 +48,7 @@ namespace WeatherDataAnalysis.DataTier
                                             throw new ArgumentNullException(nameof(this.oldWeatherDataCollection),"Current collection cannot be null.");
             this.newWeatherDataCollection = newWeatherData ??
                                             throw new ArgumentNullException(nameof(newWeatherData), "New collection cannot be null.");
+
 
             var updatedWeatherDataCollection = new WeatherDataCollection();
 
@@ -58,7 +59,7 @@ namespace WeatherDataAnalysis.DataTier
                 if (this.oldWeatherDataCollection.Any(oldDay => oldDay.Date.Equals(conflictingDay.Date)) &&
                     !this.isDoForAllChecked)
                 {
-                    var keepOrReplace = new ReplaceOrKeepDialog(conflictingDay);
+                    var keepOrReplace = new ReplaceOrKeepDialog(conflictingDay, newWeatherData.Count);
                     this.chosenResult = await keepOrReplace.ShowAsync();
                     this.isDoForAllChecked = keepOrReplace.IsDoForAllChecked;
                 }

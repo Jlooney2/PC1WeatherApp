@@ -97,11 +97,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataTier\DayAdder.cs" />
     <Compile Include="DataTier\FileMerger.cs" />
     <Compile Include="DataTier\FileSaver.cs" />
     <Compile Include="DataTier\WeatherFileParser.cs" />
     <Compile Include="Model\HighLow.cs" />
     <Compile Include="Model\WeatherDataFields.cs" />
+    <Compile Include="View\AddDayContentDialog.xaml.cs">
+      <DependentUpon>AddDayContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ReplaceOrKeepDialog.xaml.cs">
       <DependentUpon>ReplaceOrKeepDialog.xaml</DependentUpon>
     </Compile>
@@ -138,6 +142,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\AddDayContentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ReplaceOrKeepDialog.xaml">
       <SubType>Designer</SubType>

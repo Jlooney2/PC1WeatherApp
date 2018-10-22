@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using WeatherDataAnalysis.Model;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -22,15 +23,18 @@ namespace WeatherDataAnalysis.View
         /// <summary>
         /// Gets the chosen result.
         /// </summary>
+        /// <param name="conflictingDay">The conflicting day.</param>
+        /// <param name="countOfData">The count of data.</param>
         /// <value>
         /// The chosen result.
         /// </value>
-        /// <summary>
-        /// Initializes a new instance of the <see cref="View.ReplaceOrKeepDialog"/> class.
-        /// </summary>
-        public ReplaceOrKeepDialog(WeatherData conflictingDay)
+        public ReplaceOrKeepDialog(WeatherData conflictingDay, int countOfData)
         {
             this.InitializeComponent();
+            if (countOfData <= 1)
+            {
+                this.doForAllCheckBox.Visibility = Visibility.Collapsed;
+            }
             this.descriptionTextBlock.Text = $"{conflictingDay.Date.ToShortDateString()} appears twice, How would you like to handle this?";
             this.IsDoForAllChecked = false;
             

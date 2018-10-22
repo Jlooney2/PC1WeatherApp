@@ -181,5 +181,13 @@ namespace WeatherDataAnalysis
             }
         }
         #endregion
+
+        private async void addDayButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.currentWeatherCollection = await DayAdder.AddNewDay(this.currentWeatherCollection);
+            var reportBuilder = new WeatherReportBuilder(this.lowerBound, this.upperBound);
+            var report = reportBuilder.CreateReport(this.currentWeatherCollection, this.getBucketSize());
+            this.summaryTextBox.Text = report + this.errors;
+        }
     }
 }
