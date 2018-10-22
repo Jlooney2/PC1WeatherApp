@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WeatherDataAnalysis.Model;
 using WeatherDataAnalysis.View;
@@ -22,7 +19,7 @@ namespace WeatherDataAnalysis.DataTier
             var addNewDayDialog = new AddDayContentDialog();
             await addNewDayDialog.ShowAsync();
 
-            var newDay = addNewDayDialog.newDay;
+            var newDay = addNewDayDialog.NewDay;
 
             if (newDay != null)
             {

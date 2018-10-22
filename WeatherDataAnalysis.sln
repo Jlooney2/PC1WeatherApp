@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		notes.txt = notes.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDataAnalysisTestProject", "WeatherDataAnalysisTestProject\WeatherDataAnalysisTestProject.csproj", "{A48FCE79-3327-44E5-AD38-DDAA38EC334C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -38,6 +40,24 @@ Global
 		{A038F9B4-3415-43FA-AEC7-5E6552EAF2B1}.Release|x86.ActiveCfg = Release|x86
 		{A038F9B4-3415-43FA-AEC7-5E6552EAF2B1}.Release|x86.Build.0 = Release|x86
 		{A038F9B4-3415-43FA-AEC7-5E6552EAF2B1}.Release|x86.Deploy.0 = Release|x86
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|ARM.Build.0 = Debug|ARM
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|ARM.Deploy.0 = Debug|ARM
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|x64.ActiveCfg = Debug|x64
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|x64.Build.0 = Debug|x64
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|x64.Deploy.0 = Debug|x64
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|x86.ActiveCfg = Debug|x86
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|x86.Build.0 = Debug|x86
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Debug|x86.Deploy.0 = Debug|x86
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|ARM.ActiveCfg = Release|ARM
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|ARM.Build.0 = Release|ARM
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|ARM.Deploy.0 = Release|ARM
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|x64.ActiveCfg = Release|x64
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|x64.Build.0 = Release|x64
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|x64.Deploy.0 = Release|x64
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|x86.ActiveCfg = Release|x86
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|x86.Build.0 = Release|x86
+		{A48FCE79-3327-44E5-AD38-DDAA38EC334C}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
